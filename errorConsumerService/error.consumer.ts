@@ -24,5 +24,10 @@ async function consumeMessages() {
   });
 }
 
-
 consumeMessages()
+  .then(() => {
+    console.log('Consumer service started successfully.');
+  })
+  .catch((err) => {
+    console.error('Error starting consumer service:', err);
+  });
