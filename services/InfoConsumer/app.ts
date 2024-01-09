@@ -12,8 +12,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.post("/sendLog", async (req : Request, res : Response, next) => {
-  await infoConsumer.consumeMessages(); 
-  res.send();
+ const response =  await infoConsumer.consumeMessages(); 
+  res.send(response);
 });
 
 app.listen(3002, () => {

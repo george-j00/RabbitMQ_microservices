@@ -29,6 +29,7 @@ class InfoConsumer {
                         const data = JSON.parse(msg.content.toString());
                         console.log("Received message:", data);
                         channel.ack(msg);
+                        return data;
                     }
                     catch (error) {
                         console.error("Error parsing message content:", error);

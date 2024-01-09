@@ -12,10 +12,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.post("/sendLog", async (req : Request, res : Response, next) => {
-  await warningError.consumeMessages();
-  res.send();
+ const response =  await warningError.consumeMessages();
+  res.send(response);
 });
 
-app.listen(3002, () => {
-  console.log(`Info Consumer Server started on port ${3002}`);
+app.listen(3003, () => {
+  console.log(`Info Consumer Server started on port ${3003}`);
 });

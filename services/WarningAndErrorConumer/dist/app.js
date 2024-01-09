@@ -14,16 +14,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const infoConsumer_1 = require("./infoConsumer");
-const infoConsumer = new infoConsumer_1.InfoConsumer();
+const warningErrorConsumer_1 = require("./warningErrorConsumer");
+const warningError = new warningErrorConsumer_1.WarningError();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.post("/sendLog", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield infoConsumer.consumeMessages();
+    const response = yield warningError.consumeMessages();
     res.send(response);
 }));
-app.listen(3002, () => {
-    console.log(`Info Consumer Server started on port ${3002}`);
+app.listen(3003, () => {
+    console.log(`Info Consumer Server started on port ${3003}`);
 });

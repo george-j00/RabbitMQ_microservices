@@ -12,29 +12,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.WarningError = void 0;
 const amqplib_1 = __importDefault(require("amqplib"));
-function consumeMessages() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const rabbitmqUrl = process.env.RABBITMQ_URL || "amqp://localhost";
-        const connection = yield amqplib_1.default.connect(rabbitmqUrl);
-        const channel = yield connection.createChannel();
-        yield channel.assertExchange('logExchange', 'direct');
-        const q = yield channel.assertQueue('WarningErrorQueue');
-        yield channel.bindQueue(q.queue, 'logExchange', 'warning');
-        yield channel.bindQueue(q.queue, 'logExchange', 'error');
-        channel.consume(q.queue, (msg) => {
-            if (msg !== null && msg.content) {
-                try {
-                    const data = JSON.parse(msg.content.toString());
-                    console.log('Received message:', data);
-                    channel.ack(msg);
+class WarningError {
+    consumeMessages() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rabbitmqUrl = process.env.RABBITMQ_URL || "amqp://localhost";
+            const connection = yield amqplib_1.default.connect(rabbitmqUrl);
+            const channel = yield connection.createChannel();
+            yield channel.assertExchange("logExchange", "direct");
+            const q = yield channel.assertQueue("WarningErrorQueue");
+            yield channel.bindQueue(q.queue, "logExchange", "warning");
+            yield channel.bindQueue(q.queue, "logExchange", "error");
+            channel.consume(q.queue, (msg) => {
+                if (msg !== null && msg.content) {
+                    try {
+                        const data = JSON.parse(msg.content.toString());
+                        console.log("Received message:", data);
+                        channel.ack(msg);
+                        return data;
+                    }
+                    catch (error) {
+                        console.error("Error parsing message content:", error);
+                        console.log("Raw message content:", msg.content.toString());
+                    }
                 }
-                catch (error) {
-                    console.error('Error parsing message content:', error);
-                    console.log('Raw message content:', msg.content.toString());
-                }
-            }
+            });
         });
-    });
+    }
 }
-consumeMessages();
+exports.WarningError = WarningError;

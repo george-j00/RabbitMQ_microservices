@@ -1,7 +1,7 @@
 import amqp from "amqplib";
 
 export class InfoConsumer {
-  
+
   public async consumeMessages() {
     const rabbitmqUrl = process.env.RABBITMQ_URL || "amqp://localhost";
     const connection = await amqp.connect(rabbitmqUrl);
@@ -20,6 +20,7 @@ export class InfoConsumer {
           const data = JSON.parse(msg.content.toString());
           console.log("Received message:", data);
           channel.ack(msg);
+          return data
         } catch (error) {
           console.error("Error parsing message content:", error);
           console.log("Raw message content:", msg.content.toString());
