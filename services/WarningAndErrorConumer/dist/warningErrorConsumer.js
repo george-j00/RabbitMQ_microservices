@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const amqplib_1 = __importDefault(require("amqplib"));
 function consumeMessages() {
     return __awaiter(this, void 0, void 0, function* () {
-        const connection = yield amqplib_1.default.connect('amqp://localhost');
+        const rabbitmqUrl = process.env.RABBITMQ_URL || "amqp://localhost";
+        const connection = yield amqplib_1.default.connect(rabbitmqUrl);
         const channel = yield connection.createChannel();
         yield channel.assertExchange('logExchange', 'direct');
         const q = yield channel.assertQueue('WarningErrorQueue');

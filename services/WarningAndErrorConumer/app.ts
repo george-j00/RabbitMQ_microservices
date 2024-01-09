@@ -1,9 +1,9 @@
 
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
-import { Producer } from './producer';
+import { WarningError } from './warningErrorConsumer';
 
-const producer = new Producer();
+const warningError = new WarningError();
 
 const app : Express  = express();
 
@@ -12,10 +12,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.post("/sendLog", async (req : Request, res : Response, next) => {
-  await producer.publishMessage(req.body.logType, req.body.message); 
+  await warningError.consumeMessages();
   res.send();
 });
 
-app.listen(3001, () => {
-  console.log("Server started...");
+app.listen(3002, () => {
+  console.log(`Info Consumer Server started on port ${3002}`);
 });

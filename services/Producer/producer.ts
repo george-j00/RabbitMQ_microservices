@@ -1,11 +1,12 @@
-import ampq from 'amqplib';
-import { rabbitMQ } from './config';
+import amqp from "amqplib";
+// import { rabbitMQ } from './config';
 
 export class Producer {
-  private channel: ampq.Channel | null = null;
+  private channel: amqp.Channel | null = null;
 
   private async createChannel() {
-    const connection = await ampq.connect(rabbitMQ.url);
+    const rabbitmqUrl = process.env.RABBITMQ_URL || "amqp://localhost";
+    const connection = await amqp.connect(rabbitmqUrl);
     this.channel = await connection.createChannel();
   }
 
@@ -15,8 +16,8 @@ export class Producer {
     }
 
     if (this.channel) {
-      const exchangeName = rabbitMQ.exchangeName;
-      await this.channel.assertExchange(exchangeName, 'direct');
+      const exchangeName = "logExchange";
+      await this.channel.assertExchange(exchangeName, "direct");
 
       const logDetails = {
         logType: routingKey,
@@ -34,7 +35,7 @@ export class Producer {
         `The new ${routingKey} log is sent to exchange ${exchangeName}`
       );
     } else {
-      console.error('Failed to create a channel');
+      console.error("Failed to create a channel");
     }
   }
 }

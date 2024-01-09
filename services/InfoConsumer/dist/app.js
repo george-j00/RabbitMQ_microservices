@@ -14,16 +14,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const producer_1 = require("./producer");
-const producer = new producer_1.Producer();
+const infoConsumer_1 = require("./infoConsumer");
+const infoConsumer = new infoConsumer_1.InfoConsumer();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.post("/sendLog", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield producer.publishMessage(req.body.logType, req.body.message);
+    yield infoConsumer.consumeMessages();
     res.send();
 }));
-app.listen(3001, () => {
-    console.log("Server started...");
+app.listen(3002, () => {
+    console.log(`Info Consumer Server started on port ${3002}`);
 });

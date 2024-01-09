@@ -1,0 +1,45 @@
+version: '3.8'  # Use a recent version for health check support
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-container
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest  # Replace with your actual credentials
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+  producer:
+    image: producer-image
+    container_name: producer-container
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq
+    ports:
+      - "3002:3001"
+
+
+  info-consumer:
+    image: info-consumer-image
+    container_name: info-consumer-container
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq
+
+  warning-error-consumer:
+    image: warning-error-consumer-image
+    container_name: warning-error-consumer-container
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq
+
+volumes:
+  rabbitmq-data:
