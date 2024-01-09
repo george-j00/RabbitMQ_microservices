@@ -24,7 +24,7 @@ export class Producer {
         dateTime: new Date(),
       };
 
-      await this.channel.publish(
+      this.channel.publish(
         exchangeName,
         routingKey,
         Buffer.from(JSON.stringify(logDetails))
