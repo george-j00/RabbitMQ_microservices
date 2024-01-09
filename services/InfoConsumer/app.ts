@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.post("/sendLog", async (req : Request, res : Response, next) => {
+app.post("/getInfo", async (req : Request, res : Response, next) => {
  const response =  await infoConsumer.consumeMessages(); 
   res.send(response);
 });
