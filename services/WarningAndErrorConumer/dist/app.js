@@ -20,10 +20,10 @@ const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
-app.post("/sendLog", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/getWarning", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield warningError.consumeMessages();
     res.send(response);
 }));
 app.listen(3003, () => {
-    console.log(`Info Consumer Server started on port ${3003}`);
+    console.log(`warning and error Consumer Server started on port ${3003}`);
 });

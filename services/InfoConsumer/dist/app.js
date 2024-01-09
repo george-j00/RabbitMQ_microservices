@@ -20,7 +20,7 @@ const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
-app.post("/sendLog", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+app.get("/getInfo", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const response = yield infoConsumer.consumeMessages();
     res.send(response);
 }));
